@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -36,7 +37,7 @@ public class ClienteController {
     //Crear un cliente
     //requestbody mandamos los datos a insertar por el cuerpo de la consulta
     @PostMapping
-    public ResponseEntity<Cliente> create(@RequestBody Cliente cliente){
+    public ResponseEntity<Cliente> create(@Valid @RequestBody Cliente cliente) {
         return new ResponseEntity<>(clienteService.create(cliente), HttpStatus.CREATED);
     }
 
@@ -44,10 +45,10 @@ public class ClienteController {
     //buscamos un cliene por id si lo encuentra en el map lo actualzia
     //caso contrario orElseGet devuelve un error 404
     @PutMapping
-    public ResponseEntity<Cliente> update(@RequestBody Cliente cliente){
+    public ResponseEntity<Cliente> update(@Valid @RequestBody Cliente cliente) {
         return clienteService.findById(cliente.getIdCliente())
-                .map( c -> ResponseEntity.ok(clienteService.update(cliente)))
-                .orElseGet(()-> ResponseEntity.notFound().build());
+                .map(c -> ResponseEntity.ok(clienteService.update(cliente)))
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     //Eliminar Cliente
